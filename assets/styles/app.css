@@ -1,3 +1,20 @@
+* {
+    cursor: url('../img/paw.svg'), auto;
+}
+
 body {
-    background-color: skyblue;
+    background: url("../img/temple.png");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    overflow: hidden;
+}
+
+header, footer {
+    position: relative;
+    z-index: 10;
+}
+
+a {
+    cursor: pointer;
 }
