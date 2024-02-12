@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bucket List | Bucket{% endblock %}
+
+{% block body %}
+    <div class="container card shadow-sm p-3">
+        <h1 class="text-center mb-4">Buckets</h1>
+
+        <ul class="list-group mb-3">
+            {% for bucket in bucketList %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                        {{ bucket.title }}
+                    </div>
+                    <div>
+                        <a class="btn btn-outline-secondary btn-sm" href="{{ path('wish_detail', {'id': bucket.id}) }}">Détail</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <div class="d-flex justify-content-center">
+            <a href="{{ path('') }}" class="btn btn-primary">Ajouter un Bucket</a>
+        </div>
+    </div>
+{% endblock %}
