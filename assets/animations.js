@@ -23,8 +23,8 @@ function createHeart() {
 document.addEventListener('mousemove', function (e) {
     let body = document.querySelector('body');
     let circle = document.getElementById('abs-dog');
-    let left = e.clientX - 100;
-    let top = e.clientY - 100;
+    let left = e.pageX - 100;
+    let top = e.pageY - 100;
 
     circle.style.left = left + 'px';
     circle.style.top = top + 'px';

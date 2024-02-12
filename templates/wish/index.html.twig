@@ -13,14 +13,14 @@
                         {{ bucket.title }}
                     </div>
                     <div>
-                        <a class="btn btn-outline-secondary btn-sm" href="{{ path('wish_detail', {'id': bucket.id}) }}">Détail</a>
+                        <a class="btn btn-outline-primary btn-sm" href="{{ path('wish_detail', {'id': bucket.id}) }}">Détail</a>
                     </div>
                 </li>
             {% endfor %}
         </ul>
 
         <div class="d-flex justify-content-center">
-            <a href="{{ path('') }}" class="btn btn-primary">Ajouter un Bucket</a>
+            <a href="{{ path('wish_create') }}" class="btn btn-primary">Ajouter un Bucket</a>
         </div>
     </div>
 {% endblock %}

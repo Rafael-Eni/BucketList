@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use phpDocumentor\Reflection\Types\Boolean;
 
 #[ORM\Entity(repositoryClass: WishRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Wish
 {
     #[ORM\Id]
@@ -25,7 +26,7 @@ class Wish
     private ?string $author = null;
 
     #[ORM\Column(options: ["default" => false])]
-    private ?bool $isPublished = null;
+    private ?bool $isPublished = false;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateCreated = null;
@@ -91,9 +92,10 @@ class Wish
         return $this->dateCreated;
     }
 
-    public function setDateCreated(\DateTimeInterface $dateCreated): static
+    #[ORM\PrePersist]
+    public function setDateCreated(): static
     {
-        $this->dateCreated = $dateCreated;
+        $this->dateCreated = new \DateTime();
 
         return $this;
     }
@@ -103,9 +105,10 @@ class Wish
         return $this->dateUpdated;
     }
 
-    public function setDateUpdated(?\DateTimeInterface $dateUpdated): static
+    #[ORM\PreUpdate]
+    public function setDateUpdated(): static
     {
-        $this->dateUpdated = $dateUpdated;
+        $this->dateUpdated = new \DateTime();
 
         return $this;
     }

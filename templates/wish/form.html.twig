@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bucket List | Creation{% endblock %}
+
+{% block body %}
+
+    <div class="container card shadow-sm p-3" style="max-width: 800px">
+        <h3 class="text-center">Ajouter un Bucket</h3>
+        {{ form_start(form) }}
+        {{ form_rest(form) }}
+        <div class="d-flex flex-row justify-content-between align-items-center">
+            <div></div>
+            <button type="submit" class="btn btn-outline-primary">Soumettre</button>
+            <a href="{{ path('wish_list') }}">Retour</a>
+        </div>
+        {{ form_end(form) }}
+    </div>
+
+{% endblock %}

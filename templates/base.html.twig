@@ -29,7 +29,11 @@
     {% include "red-dog.html.twig" %}
 </div>
 
-
+{% for label, messages in app.flashes %}
+    {% for message in messages %}
+        <div class="alert alert-{{ label }}"> {{ message }} </div>
+    {% endfor %}
+{% endfor %}
 {% include "partials/_footer.html.twig" %}
 
 
