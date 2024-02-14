@@ -23,3 +23,10 @@ a {
     border-bottom: 1px solid #eee;
     margin-bottom: 20px;
 }
+.img-container {
+    height: 300px;
+}
+
+img {
+    height: 100%;
+}

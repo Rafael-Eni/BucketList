@@ -2,14 +2,17 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Entity\Wish;
 use App\Form\WishType;
 use App\Repository\WishRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('/wish', name: 'wish')]
 class WishController extends AbstractController
@@ -25,12 +28,9 @@ class WishController extends AbstractController
         ]);
     }
 
-
     #[Route('/{id}', name: '_detail', requirements: ['id' => '\d+'])]
-    public function detail(int $id, WishRepository $wishRepository): Response
+    public function detail(Wish $bucket, WishRepository $wishRepository): Response
     {
-        $bucket = $wishRepository->find($id);
-
         return $this->render('wish/detail.html.twig', [
             'bucket' => $bucket
         ]);
@@ -38,7 +38,7 @@ class WishController extends AbstractController
 
     #[Route('/create', name: '_create')]
     #[Route('/update/{id}', name: '_update')]
-    public function create(Request $request, EntityManagerInterface $manager, ?Wish $bucket): Response
+    public function create(Request $request, EntityManagerInterface $manager, ?Wish $bucket, SluggerInterface $slugger): Response
     {
         $isEditMode = $bucket ? true : false;
 
@@ -50,9 +50,25 @@ class WishController extends AbstractController
         $bucketForm->handleRequest($request);
 
         if($bucketForm->isSubmitted() && $bucketForm->isValid()) {
+
+            if ($bucketForm->get('poster_file')->getData() instanceof UploadedFile) {
+                $dir = $this->getParameter('poster_dir');
+                $posterFile = $bucketForm->get('poster_file')->getData();
+                $fileName = $slugger->slug($bucket->getId()) . '-' . uniqid() . '.' . $posterFile->guessExtension();
+                $posterFile->move($dir, $fileName);
+
+                if ($bucket->getPoster() && \file_exists($dir . '/' . $bucket->getPoster())) {
+                    unlink($dir . '/' . $bucket->getPoster());
+                }
+
+                $bucket->setPoster($fileName);
+
+            }
+
             if (!$isEditMode) {
                 $manager->persist($bucket);
             }
+
             $manager->flush();
             $this->addFlash('success', 'Bucket crée avec succès');
             return $this->redirectToRoute('wish_list');

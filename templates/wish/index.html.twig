@@ -10,7 +10,7 @@
             {% for bucket in bucketList %}
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                         <div>
-                        {{ bucket.title }}
+                        {{ bucket.title }} <em style="color: #0a53be"><small>[ {{ bucket.category.name }} ]</small></em>
                     </div>
                     <div>
                         <a class="btn btn-outline-primary btn-sm" href="{{ path('wish_detail', {'id': bucket.id}) }}">Détail</a>

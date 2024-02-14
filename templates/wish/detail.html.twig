@@ -7,29 +7,38 @@
 
 
     <div class="container card shadow-sm p-3" style="max-width: 800px">
-        <h3 class="text-center">{{ bucket.title }}</h3>
-        <p class="text-center mb-3"><small>Auteur : {{ bucket.author }}</small></p>
+        <h3 class="text-center mb-3">{{ bucket.title }}</h3>
+        <p class="text-center mb-0"><strong>Auteur : </strong><small>{{ bucket.author }}</small></p>
+        <p class="text-center mb-3"><strong>Catégorie : </strong><small>{{ bucket.category.name }}</small></p>
         <div class="separator"></div>
         <p class="text-justify">{{ bucket.description }}</p>
+        <div class="img-container mb-3">
+            <img class="rounded mx-auto d-block" src="{{ asset(poster_dir ~ '/' ~ bucket.poster) }}">
+        </div>
         <div class="d-flex flex-row justify-content-center">
-            <a class="btn btn-outline-primary btn-sm me-2" href="{{ path('wish_update', {'id': bucket.id}) }}">Modifier</a>
+            <a class="btn btn-outline-primary btn-sm me-2"
+               href="{{ path('wish_update', {'id': bucket.id}) }}">Modifier</a>
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-outline-danger btn-sm me-2" data-bs-toggle="modal" data-bs-target="#deleteModal">
+            <button type="button" class="btn btn-outline-danger btn-sm me-2" data-bs-toggle="modal"
+                    data-bs-target="#deleteModal">
                 Supprimer
             </button>
             <!-- Modal -->
-            <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Supprimer <i class="bi bi-trash3"></i></h1>
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Supprimer <i class="bi bi-trash3"></i>
+                            </h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             Êtes vous sur de vouloir supprimer votre bucket ?
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Annuler</button>
+                            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Annuler
+                            </button>
                             <a class="btn btn-danger btn-sm me-2" href="{{ path('wish_delete', {'id': bucket.id}) }}">Suprimer</a>
                         </div>
                     </div>
