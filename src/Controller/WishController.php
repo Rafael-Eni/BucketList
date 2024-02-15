@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Entity\Wish;
 use App\Form\WishType;
+use App\Helper\CensureService;
 use App\Repository\WishRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -39,8 +40,8 @@ class WishController extends AbstractController
 
     #[Route('/create', name: '_create')]
     #[Route('/update/{id}', name: '_update')]
-    #[IsGranted("ROLE_CONTRIB")]
-    public function create(Request $request, EntityManagerInterface $manager, ?Wish $bucket, SluggerInterface $slugger): Response
+    #[IsGranted("ROLE_USER")]
+    public function create(Request $request, EntityManagerInterface $manager, ?Wish $bucket, SluggerInterface $slugger, CensureService $censureService): Response
     {
         $isEditMode = $bucket ? true : false;
 
@@ -67,6 +68,12 @@ class WishController extends AbstractController
 
             }
 
+            $censoredTitle = $censureService->censure($bucket->getTitle());
+            $censoredContent = $censureService->censure($bucket->getDescription());
+
+            $bucket->setTitle($censoredTitle);
+            $bucket->setDescription($censoredContent);
+
             if (!$isEditMode) {
                 $manager->persist($bucket);
             }
@@ -82,7 +89,7 @@ class WishController extends AbstractController
     }
 
     #[Route('/delete/{id}', name: '_delete')]
-    #[IsGranted("ROLE_CONTRIB")]
+    #[IsGranted("ROLE_USER")]
     public function delete(Wish $wish, EntityManagerInterface $em): Response
     {
 
