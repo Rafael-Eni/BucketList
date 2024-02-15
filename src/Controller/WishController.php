@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('/wish', name: 'wish')]
@@ -38,6 +39,7 @@ class WishController extends AbstractController
 
     #[Route('/create', name: '_create')]
     #[Route('/update/{id}', name: '_update')]
+    #[IsGranted("ROLE_CONTRIB")]
     public function create(Request $request, EntityManagerInterface $manager, ?Wish $bucket, SluggerInterface $slugger): Response
     {
         $isEditMode = $bucket ? true : false;
@@ -80,6 +82,7 @@ class WishController extends AbstractController
     }
 
     #[Route('/delete/{id}', name: '_delete')]
+    #[IsGranted("ROLE_CONTRIB")]
     public function delete(Wish $wish, EntityManagerInterface $em): Response
     {
 
